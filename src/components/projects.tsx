@@ -6,31 +6,26 @@ import Image from 'next/image'
 
 const projects = [
   {
-    title: 'E-commerce Platform',
+    title: 'GoldenCars',
     description:
-      'A modern e-commerce platform built with Next.js, TypeScript, and Tailwind CSS. Features include real-time inventory management, secure payments, and an intuitive admin dashboard.',
-    image: 'https://images.unsplash.com/photo-1557821552-17105176677c?w=800&q=80',
-    technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Supabase'],
-    liveUrl: 'https://example.com',
-    githubUrl: 'https://github.com',
+      'A modern management system for a car dealership. Viewing customers and drafting invoices and workorders.',
+    image: '/goldencars.png',
+    technologies: ['NextJS', 'TypeScript', 'Tailwind CSS', 'PostgreSQL'],
   },
   {
-    title: 'Task Management App',
+    title: 'AutoBill SaaS',
     description:
-      'A collaborative task management application with real-time updates, drag-and-drop functionality, and team collaboration features.',
-    image: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&q=80',
-    technologies: ['React', 'Node.js', 'PostgreSQL', 'WebSocket'],
-    liveUrl: 'https://example.com',
-    githubUrl: 'https://github.com',
+      'A SaaS application for managing a Dealerships. Create invoices and workorders for customers using your own existing invoices and workorders.',
+    image: '/autobill.png',
+    technologies: ['NextJS', 'TypeScript', 'Tailwind CSS', 'PostgreSQL'],
+    liveUrl: 'https://autobill.be',
   },
   {
-    title: 'AI-Powered Analytics Dashboard',
+    title: 'ZeroRent Portal',
     description:
-      'An analytics dashboard that uses machine learning to provide insights and predictions based on user data. Features interactive visualizations and automated reporting.',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
-    technologies: ['Python', 'TensorFlow', 'React', 'D3.js'],
-    liveUrl: 'https://example.com',
-    githubUrl: 'https://github.com',
+      'A portal for managing customers, loans and their payments. The portal is used by the customers to view their progress on the loan and the admin dashboard is used by the dealership to manage the customers and loans.',
+    image: '/zerorent.png',
+    technologies: ['NextJS', 'TypeScript', 'Tailwind CSS', 'PostgreSQL'],
   },
 ]
 
@@ -90,6 +85,7 @@ export function Projects() {
                     ))}
                   </div>
                   <div className="flex gap-4">
+                    {project.liveUrl && (
                     <a
                       href={project.liveUrl}
                       target="_blank"
@@ -98,14 +94,7 @@ export function Projects() {
                     >
                       View Live
                     </a>
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn-secondary"
-                    >
-                      View Code
-                    </a>
+                    )}
                   </div>
                 </div>
               </motion.div>
