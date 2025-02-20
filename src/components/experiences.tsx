@@ -5,18 +5,38 @@ import { useInView } from 'react-intersection-observer'
 
 const experiences = [
   {
-    company: 'Tech Company',
-    role: 'Senior Full Stack Developer',
-    duration: '2021 - Present',
-    description: 'Led development of enterprise applications using Next.js and TypeScript.',
-    technologies: ['Next.js', 'TypeScript', 'Node.js', 'PostgreSQL'],
+    company: 'Amotek Technologies',
+    role: 'Full Stack Developer',
+    duration: '2022 - Present',
+    description: 'Consulting Developer for a variety of clients.',
+    technologies: ['React', 'TypeScript', 'Fastify', 'PostgreSQL'],
     achievements: [
-      'Improved application performance by 40%',
-      'Implemented CI/CD pipeline',
+      'Developed a ERP system for a client in the building industry.',
       'Mentored junior developers',
+      'Led an internal product project we built from scratch.',
     ],
   },
-  // Add more experiences here
+  {
+    company: 'ZeroRent',
+    role: 'CTO',
+    duration: '2024 - Present',
+    description: 'Creator of the ZeroRent portal and admin dashboard.',
+    technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'PostgreSQL'],
+    achievements: [
+      'Created the ZeroRent portal and admin dashboard.',
+    ],
+  },
+  {
+    company: 'Solvify',
+    role: 'Chief Nerd',
+    duration: '2023 - Present',
+    description: 'Helping business scale using IT.',
+    technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'PostgreSQL'],
+    achievements: [
+      'Developed a management system for a client in the automotive industry.',
+      'Developed a SaaS application for dealerships'
+    ],
+  },
 ]
 
 export const Experience = () => {
@@ -36,6 +56,7 @@ export const Experience = () => {
           Professional Experience
         </motion.h2>
         <div className="relative mx-auto max-w-4xl">
+          <div className="absolute left-2.5 top-3 bottom-3 w-px bg-red-200 dark:bg-red-800" />
           {experiences.map((exp, index) => (
             <motion.div
               key={index}
@@ -45,7 +66,6 @@ export const Experience = () => {
               className="relative mb-12 flex gap-8 last:mb-0"
             >
               <div className="relative flex-none">
-                <div className="absolute left-2.5 top-0 h-full w-px bg-red-200 dark:bg-red-800" />
                 <div className="relative z-10 h-6 w-6 rounded-full bg-red-800 ring-4 ring-white dark:ring-neutral-900" />
               </div>
               <div className="flex-1">
