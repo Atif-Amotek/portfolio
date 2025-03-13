@@ -15,11 +15,29 @@ export function Contact() {
     email: '',
     message: '',
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Add form submission logic here
-    console.log('Form submitted:', formData)
+    setIsSubmitting(true)
+    
+    try {
+      // Add form submission logic here
+      await new Promise(resolve => setTimeout(resolve, 1000)) // Simulate API call
+      console.log('Form submitted:', formData)
+      setIsSubmitted(true)
+      
+      // Reset form after 2 seconds
+      setTimeout(() => {
+        setFormData({ name: '', email: '', message: '' })
+        setIsSubmitting(false)
+        setIsSubmitted(false)
+      }, 2000)
+    } catch (error) {
+      console.error('Error submitting form:', error)
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -84,9 +102,52 @@ export function Contact() {
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   />
                 </div>
-                <button type="submit" className="btn-primary w-full">
-                  Send Message
-                </button>
+                <motion.button
+                  type="submit"
+                  className="btn-primary relative w-full overflow-hidden"
+                  disabled={isSubmitting}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <motion.div
+                    initial={false}
+                    animate={{
+                      opacity: isSubmitting ? 0 : 1,
+                      y: isSubmitting ? -20 : 0,
+                    }}
+                  >
+                    Send Message
+                  </motion.div>
+                  {isSubmitting && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="absolute left-1/2 top-[40%] -translate-x-1/2 -translate-y-1/2"
+                    >
+                      <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-white" />
+                    </motion.div>
+                  )}
+                  {isSubmitted && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.5 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="absolute left-1/2 top-[40%] -translate-x-1/2 -translate-y-1/2 text-white"
+                    >
+                      <svg
+                        className="h-6 w-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </motion.div>
+                  )}
+                </motion.button>
               </form>
             </div>
             <div className="flex flex-col justify-center space-y-8 lg:pl-8">
@@ -110,10 +171,10 @@ export function Contact() {
                       />
                     </svg>
                     <a
-                      href="mailto:your.email@example.com"
+                      href="mailto:atif.khalil@solvify.be"
                       className="text-neutral-600 hover:text-red-800 dark:text-neutral-300 dark:hover:text-red-500"
                     >
-                      your.email@example.com
+                      atif.khalil@solvify.be
                     </a>
                   </div>
                   <div className="flex items-center space-x-3">
@@ -130,7 +191,7 @@ export function Contact() {
                         d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                       />
                     </svg>
-                    <span className="text-neutral-600 dark:text-neutral-300">+1 (123) 456-7890</span>
+                    <span className="text-neutral-600 dark:text-neutral-300">+32 499 89 93 24</span>
                   </div>
                 </div>
               </div>
@@ -140,7 +201,7 @@ export function Contact() {
                 </h3>
                 <div className="flex space-x-4">
                   <a
-                    href="https://github.com/yourusername"
+                    href="https://github.com/Atif-Amotek"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-neutral-600 transition-colors hover:text-red-800 dark:text-neutral-300 dark:hover:text-red-500"
@@ -154,7 +215,7 @@ export function Contact() {
                     </svg>
                   </a>
                   <a
-                    href="https://linkedin.com/in/yourusername"
+                    href="https://www.linkedin.com/in/atif-k-04b037225/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-neutral-600 transition-colors hover:text-red-800 dark:text-neutral-300 dark:hover:text-red-500"
