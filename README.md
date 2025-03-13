@@ -20,6 +20,25 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## EmailJS Setup
+
+This project uses [EmailJS](https://www.emailjs.com/) to send contact form submissions directly to your email. To set it up:
+
+1. Create an account on [EmailJS](https://www.emailjs.com/)
+2. Create an Email Service (connect your email provider)
+3. Create an Email Template with the following variables:
+   - `{{from_name}}` - Name of the person contacting you
+   - `{{from_email}}` - Email of the person contacting you
+   - `{{message}}` - The message content
+4. Get your Service ID, Template ID, and Public Key
+5. Create a `.env.local` file in the root directory with the following variables:
+   ```
+   NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_service_id
+   NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_template_id
+   NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key
+   ```
+6. Restart your development server
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

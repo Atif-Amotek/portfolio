@@ -1,15 +1,48 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
+import emailjs from '@emailjs/browser'
+import toast, { Toaster } from 'react-hot-toast'
 
-export function Contact() {
+export const Contact = () => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   })
 
+  const [isDarkMode, setIsDarkMode] = useState(false)
+  
+  useEffect(() => {
+    // Check if dark mode is enabled
+    const isDark = document.documentElement.classList.contains('dark')
+    setIsDarkMode(isDark)
+    
+    // Listen for changes to the theme
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (
+          mutation.type === 'attributes' &&
+          mutation.attributeName === 'class'
+        ) {
+          const isDark = document.documentElement.classList.contains('dark')
+          setIsDarkMode(isDark)
+        }
+      })
+    })
+    
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    })
+    
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
+
+  const formRef = useRef<HTMLFormElement>(null)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -17,18 +50,42 @@ export function Contact() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [error, setError] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setError('')
+    
+    // Show a loading toast that will be dismissed when the form is submitted
+    const loadingToast = toast.loading('Sending your message...')
     
     try {
-      // Add form submission logic here
-      await new Promise(resolve => setTimeout(resolve, 1000)) // Simulate API call
-      console.log('Form submitted:', formData)
+      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
+      const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
+      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+      
+      if (!formRef.current || !serviceId || !templateId || !publicKey) {
+        toast.dismiss(loadingToast)
+        toast.error('Unable to send message due to missing configuration. Please try again later.')
+        setIsSubmitting(false)
+        return
+      }
+      
+      const response = await emailjs.sendForm(
+        serviceId,
+        templateId,
+        formRef.current,
+        publicKey
+      )
+      
+      console.log('Email sent successfully:', response)
       setIsSubmitted(true)
       
-      // Reset form after 2 seconds
+      // Dismiss the loading toast and show success toast
+      toast.dismiss(loadingToast)
+      toast.success(`Thanks ${formData.name}! Your message has been sent. I'll get back to you soon.`)
+      
       setTimeout(() => {
         setFormData({ name: '', email: '', message: '' })
         setIsSubmitting(false)
@@ -36,6 +93,12 @@ export function Contact() {
       }, 2000)
     } catch (error) {
       console.error('Error submitting form:', error)
+      setError('Failed to send message. Please try again later.')
+      
+      // Dismiss the loading toast and show error toast
+      toast.dismiss(loadingToast)
+      toast.error('Something went wrong sending your message. Please try again or contact me directly via email.')
+      
       setIsSubmitting(false)
     }
   }
@@ -43,6 +106,42 @@ export function Contact() {
   return (
     <section id="contact" className="bg-neutral-50 py-20 dark:bg-neutral-800" ref={ref}>
       <div className="container mx-auto px-4">
+        <Toaster 
+          position="top-right"
+          toastOptions={{
+            duration: 5000,
+            style: {
+              background: isDarkMode ? '#333' : '#fff',
+              color: isDarkMode ? '#fff' : '#333',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+              borderRadius: '8px',
+              padding: '16px',
+              fontSize: '14px',
+            },
+            success: {
+              style: {
+                background: isDarkMode ? '#333' : '#fff',
+                border: isDarkMode ? '1px solid #10B981' : '1px solid #10B981',
+                color: isDarkMode ? '#fff' : '#333',
+              },
+              iconTheme: {
+                primary: '#EF4444',
+                secondary: isDarkMode ? '#333' : '#fff',
+              },
+            },
+            error: {
+              style: {
+                background: isDarkMode ? '#333' : '#fff',
+                border: isDarkMode ? '1px solid #EF4444' : '1px solid #EF4444',
+                color: isDarkMode ? '#fff' : '#333',
+              },
+              iconTheme: {
+                primary: '#EF4444',
+                secondary: isDarkMode ? '#333' : '#fff',
+              },
+            },
+          }}
+        />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -53,7 +152,7 @@ export function Contact() {
           </h2>
           <div className="grid gap-12 rounded-2xl bg-white p-8 shadow-lg dark:bg-neutral-900 lg:grid-cols-2">
             <div>
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label
                     htmlFor="name"
@@ -64,6 +163,7 @@ export function Contact() {
                   <input
                     type="text"
                     id="name"
+                    name="from_name"
                     required
                     className="mt-1 block w-full rounded-md border border-neutral-300 bg-white px-4 py-2 text-neutral-900 shadow-sm focus:border-red-500 focus:ring-2 focus:ring-red-500 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white"
                     value={formData.name}
@@ -80,6 +180,7 @@ export function Contact() {
                   <input
                     type="email"
                     id="email"
+                    name="from_email"
                     required
                     className="mt-1 block w-full rounded-md border border-neutral-300 bg-white px-4 py-2 text-neutral-900 shadow-sm focus:border-red-500 focus:ring-2 focus:ring-red-500 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white"
                     value={formData.email}
@@ -95,6 +196,7 @@ export function Contact() {
                   </label>
                   <textarea
                     id="message"
+                    name="message"
                     required
                     rows={4}
                     className="mt-1 block w-full rounded-md border border-neutral-300 bg-white px-4 py-2 text-neutral-900 shadow-sm focus:border-red-500 focus:ring-2 focus:ring-red-500 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white"
@@ -102,6 +204,11 @@ export function Contact() {
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   />
                 </div>
+                {error && (
+                  <div className="text-sm text-red-600 dark:text-red-400">
+                    {error}
+                  </div>
+                )}
                 <motion.button
                   type="submit"
                   className="btn-primary relative w-full overflow-hidden"
