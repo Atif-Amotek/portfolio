@@ -5,18 +5,6 @@ import { useInView } from 'react-intersection-observer'
 
 const experiences = [
   {
-    company: 'Amotek Technologies',
-    role: 'Full Stack Developer',
-    duration: '2022 - Present',
-    description: 'Consulting Developer for a variety of clients.',
-    technologies: ['React', 'TypeScript', 'Fastify', 'PostgreSQL'],
-    achievements: [
-      'Developed a ERP system for a client in the building industry.',
-      'Mentored junior developers',
-      'Led an internal product project we built from scratch.',
-    ],
-  },
-  {
     company: 'ZeroRent',
     role: 'CTO',
     duration: '2024 - Present',
@@ -35,6 +23,18 @@ const experiences = [
     achievements: [
       'Developed a management system for a client in the automotive industry.',
       'Developed a SaaS application for dealerships'
+    ],
+  },
+  {
+    company: 'Amotek Technologies',
+    role: 'Full Stack Developer',
+    duration: '2022 - Present',
+    description: 'Consulting Developer for a variety of clients.',
+    technologies: ['React', 'TypeScript', 'Fastify', 'PostgreSQL'],
+    achievements: [
+      'Developed a ERP system for a client in the building industry.',
+      'Mentored junior developers',
+      'Led an internal product project we built from scratch.',
     ],
   },
 ]
