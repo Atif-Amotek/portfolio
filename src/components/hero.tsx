@@ -24,15 +24,15 @@ export const Hero = () => {
   }, [])
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-gradient-to-b from-neutral-50 to-white pt-32 dark:from-neutral-900 dark:to-neutral-800">
+    <section className="relative flex items-center min-h-screen overflow-hidden bg-gradient-to-b from-neutral-50 to-white py-16 md:pt-32 md:pb-16 dark:from-neutral-900 dark:to-neutral-800">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="container"
+        className="container mx-auto px-4 sm:px-6"
       >
         <div className="grid items-center gap-12 lg:grid-cols-2">
-          <div>
+          <div className="text-center md:text-left mx-auto md:mx-0 max-w-md">
             <motion.h1
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -64,17 +64,17 @@ export const Hero = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4 }}
-              className="flex gap-4"
+              className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
             >
-              <a href="#projects" className="btn-primary">
+              <a href="#projects" className="btn-primary w-full sm:w-auto">
                 View Projects
               </a>
-              <a href="#contact" className="btn-secondary">
+              <a href="#contact" className="btn-secondary w-full sm:w-auto">
                 Contact Me
               </a>
             </motion.div>
           </div>
-          <div className="relative">
+          <div className="relative hidden md:block">
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
