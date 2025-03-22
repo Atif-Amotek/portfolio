@@ -4,6 +4,7 @@ import { Press_Start_2P, Inter } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
+import { Analytics } from "@vercel/analytics/react"
 
 const pressStart2P = Press_Start_2P({
   weight: '400',
@@ -43,6 +44,7 @@ const Layout = ({
             <Footer />
           </div>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   )
